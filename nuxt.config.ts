@@ -1,12 +1,15 @@
-import { defineNuxtConfig } from 'nuxt/config'
+import { defineNuxtConfig } from 'nuxt/config';
 
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // Añadimos el módulo de Tailwind CSS
-  modules: ['@nuxtjs/tailwindcss'],
-
-  devServer: {
-    port: 3001
+  devtools: { enabled: true },
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@vueuse/nuxt',
+  ],
+  app: {
+    head: {
+      title: 'cliente',
+    },
   },
-
-  runtimeConfig: {}
-})
+});
