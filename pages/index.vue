@@ -4,7 +4,7 @@
     <div v-if="!isLoggedIn" class="max-w-md mx-auto">
       <div class="p-8 border rounded-lg shadow-sm bg-white">
         <div class="text-center mb-6">
-          <h2 class="text-2xl font-bold">Iniciar Sesión o Registrarse</h2>
+          <h2 class="text-2xl font-bold">Iniciar Sesión</h2>
           <p class="text-gray-600">Accede a tu panel de aprendizaje.</p>
         </div>
         <form @submit.prevent="handleLogin" class="space-y-4">
@@ -25,13 +25,20 @@
           <div class="flex items-center justify-between text-sm">
             <a href="#" @click.prevent="handleForgotPassword" class="font-medium text-blue-600 hover:text-blue-500">¿Olvidaste tu contraseña?</a>
           </div>
-          <div class="flex gap-4">
-            <!-- Botón de Entrar con degradado -->
-            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#1E88E5] to-[#43A047] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Entrar</button>
-            <!-- Botón de Registrarse con degradado -->
-            <button @click.prevent="handleRegister" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#1E88E5] to-[#43A047] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Registrarse</button>
-          </div>
+          
+          <!-- Botón de Entrar -->
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#1E88E5] to-[#43A047] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Entrar</button>
+          
         </form>
+        
+        <!-- Enlace para Registrarse -->
+        <div class="text-center mt-6 text-sm">
+          <p class="text-gray-600">
+            ¿No tienes una cuenta? 
+            <NuxtLink to="/register" class="font-medium text-blue-600 hover:text-blue-500">Regístrate aquí</NuxtLink>
+          </p>
+        </div>
+
       </div>
     </div>
 
@@ -149,7 +156,6 @@ import {
 
 // Firebase imports
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged
@@ -193,21 +199,6 @@ const handleLogin = async () => {
   }
 };
 
-const handleRegister = async () => {
-  authError.value = null;
-  try {
-    await createUserWithEmailAndPassword($auth, email.value, password.value);
-    // onAuthStateChanged will handle setting the user state
-  } catch (error) {
-    console.error("Registration Error:", error);
-    if (error.code === 'auth/email-already-in-use') {
-        authError.value = "Este correo electrónico ya está en uso.";
-    } else {
-        authError.value = "Error al registrar. La contraseña debe tener al menos 6 caracteres.";
-    }
-  }
-};
-
 const handleLogout = async () => {
   try {
     await signOut($auth);
@@ -242,4 +233,5 @@ const badges = [
   { name: "Experto en Privacidad", icon: CheckCircle, earned: false, color: "text-gray-400" },
   { name: "Guardián Digital", icon: Lock, earned: false, color: "text-gray-400" }
 ];
+
 </script>
