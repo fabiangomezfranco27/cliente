@@ -46,7 +46,7 @@
        <div class="text-center mt-6">
         <p class="text-sm text-gray-600">
           ¿Ya tienes una cuenta?
-          <NuxtLink to="/" class="font-medium text-[#1E88E5] hover:underline">Iniciar Sesión</NuxtLink>
+          <NuxtLink to="/login" class="font-medium text-[#1E88E5] hover:underline">Iniciar Sesión</NuxtLink>
         </p>
       </div>
     </div>
@@ -58,7 +58,6 @@ import { ref } from 'vue';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNuxtApp } from '#app';
 
-// Obtenemos la instancia de auth del plugin de Nuxt, la forma correcta y limpia.
 const { $auth } = useNuxtApp();
 
 const nombre = ref('');
@@ -72,11 +71,9 @@ const handleRegister = async () => {
   }
 
   try {
-    // Usamos la instancia de auth del plugin
     const userCredential = await createUserWithEmailAndPassword($auth, email.value, password.value);
     const user = userCredential.user;
     
-    // Enviar los datos a nuestro backend para crear el perfil del usuario
     await fetch('http://localhost:3000/usuarios', { 
       method: 'POST',
       headers: {
@@ -91,11 +88,9 @@ const handleRegister = async () => {
     });
 
     alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-    await navigateTo('/');
+    await navigateTo('/login');
 
   } catch (error) {
-    // Manejo de errores para el usuario final
-    console.error('Error durante el registro:', error);
     if (error.code === 'auth/email-already-in-use') {
       alert('El correo electrónico ya está en uso. Por favor, intenta con otro.');
     } else if (error.code === 'auth/weak-password') {

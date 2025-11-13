@@ -1,12 +1,12 @@
 <template>
-  <!-- Sidebar con fondo degradado y texto blanco -->
   <aside class="w-64 flex flex-col text-white bg-gradient-to-r from-[#1E88E5] to-[#43A047]">
-    <!-- Logo o Título de la Plataforma -->
-    <div class="h-20 flex items-center justify-center border-b border-white/20">
-      <h1 class="text-2xl font-bold">Plataforma</h1>
+    <div class="h-20 flex items-center justify-center border-b border-white/20 px-6">
+      <div class="flex items-center gap-3">
+        <img src="/cyber-security1.png" alt="EduSeguridad Logo" class="h-8 w-8">
+        <h1 class="text-xl font-bold">EduSeguridad</h1>
+      </div>
     </div>
 
-    <!-- Navegación Principal -->
     <nav class="flex-1 px-4 py-6 space-y-2">
       <a
         v-for="item in navigation"
@@ -24,11 +24,9 @@
       </a>
     </nav>
 
-    <!-- Perfil del Usuario o Footer del Sidebar -->
-    <div class="px-4 py-4 border-t border-white/20">
-      <a href="#" class="flex items-center px-4 py-2.5 rounded-lg hover:bg-white/10">
-        Perfil
-      </a>
+    <div class="px-6 py-4 border-t border-white/20 text-center text-xs text-white/70">
+      <p>Versión 1.0</p>
+      <p>© 2025 Educación Digital</p>
     </div>
   </aside>
 </template>
@@ -44,12 +42,12 @@ const props = defineProps({
 const emit = defineEmits(['section-change']);
 
 const navigation = [
-  { id: 'dashboard', name: 'Dashboard' },
+  { id: 'dashboard', name: 'Inicio' },
   { id: 'activities', name: 'Actividades' },
   { id: 'evaluations', name: 'Evaluaciones' },
   { id: 'progress', name: 'Mi Progreso' },
-  { id: 'styles', name: 'Estilos Aprendizaje' },
   { id: 'certificates', name: 'Certificados' },
+  { id: 'profile', name: 'Perfil' },
 ];
 
 const onSectionChange = (sectionId) => {
