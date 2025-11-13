@@ -1,9 +1,15 @@
 <template>
   <aside class="w-64 flex flex-col text-white bg-gradient-to-r from-[#1E88E5] to-[#43A047]">
-    <div class="h-20 flex items-center justify-center border-b border-white/20 px-6">
+    <div 
+      class="h-20 flex items-center justify-center border-b border-white/20 px-6 cursor-pointer hover:bg-white/10 transition-colors"
+      @click="onSectionChange('dashboard')"
+    >
       <div class="flex items-center gap-3">
-        <img src="/cyber-security1.png" alt="EduSeguridad Logo" class="h-8 w-8">
-        <h1 class="text-xl font-bold">EduSeguridad</h1>
+        <img src="/cyber-security1.png" alt="EduSeguridad Logo" class="h-10 w-10">
+        <div>
+          <h1 class="text-xl font-bold leading-tight">EduSeguridad</h1>
+          <p class="text-sm leading-tight">Educativa</p>
+        </div>
       </div>
     </div>
 
@@ -43,6 +49,7 @@ const emit = defineEmits(['section-change']);
 
 const navigation = [
   { id: 'dashboard', name: 'Inicio' },
+  { id: 'modules', name: 'Módulos' },
   { id: 'activities', name: 'Actividades' },
   { id: 'evaluations', name: 'Evaluaciones' },
   { id: 'progress', name: 'Mi Progreso' },
