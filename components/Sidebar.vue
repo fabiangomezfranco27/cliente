@@ -22,7 +22,7 @@
         :class="[
           'flex items-center px-4 py-2.5 rounded-lg transition-colors',
           activeSection === item.id
-            ? 'bg-white/20 font-semibold'
+            ? 'bg-white text-[#1E88E5] font-semibold'
             : 'hover:bg-white/10',
         ]"
       >
