@@ -1,5 +1,6 @@
 <template>
-  <div class="flex h-screen bg-gray-50">
+  <div 
+    class="flex h-screen" bg-gray-50>
     <Sidebar 
       v-if="showSidebar" 
       :active-section="activeSection" 

@@ -27,7 +27,6 @@
 
       <component 
         :is="selectedActivity.component" 
-        :isCompleted="completedActivities.has(selectedActivity.id)"
         :color="selectedActivity.color"
         @complete="handleActivityComplete(selectedActivity.id)"
       />
@@ -48,7 +47,7 @@
               <Award class="w-7 h-7" />
               <div>
                 <p class="font-bold text-lg">Tu progreso general</p>
-                <p class="text-sm text-blue-100">{{ completedActivities.size }} de {{ activities.length }} actividades completadas</p>
+                <p class="text-sm text-blue-100">{{ completedActivitiesCount }} de {{ activities.length }} actividades completadas</p>
               </div>
             </div>
             <Trophy v-if="progressPercentage === 100" class="w-12 h-12 text-yellow-300 animate-pulse" />
@@ -72,11 +71,12 @@
         <div
           v-for="activity in activities"
           :key="activity.id"
-          @click="selectedActivity = activity"
+          @click="selectAndStartActivity(activity)"
           class="cursor-pointer transition-all duration-300 rounded-lg bg-white shadow-md border-2"
           :class="{
-            'border-green-500 bg-green-50/50': completedActivities.has(activity.id),
-            'hover:shadow-xl hover:scale-105 border-transparent': !completedActivities.has(activity.id)
+            'border-green-500 bg-green-50/50': activity.status === 'completed',
+            'border-blue-500': activity.status === 'in-progress',
+            'hover:shadow-xl hover:scale-105 border-transparent': activity.status === 'not-started'
           }"
           :style="{ borderTopWidth: '4px', borderTopColor: activity.color }"
         >
@@ -88,8 +88,13 @@
               >
                 <component :is="activity.icon" class="w-6 h-6" :style="{ color: activity.color }"/>
               </div>
-              <span v-if="completedActivities.has(activity.id)" class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 font-semibold">
-                ✓ Completada
+              <span 
+                v-if="statusConfig[activity.status]"
+                class="flex items-center gap-2 px-2 py-1 text-xs rounded-full font-semibold"
+                :class="statusConfig[activity.status].badgeClass"
+              >
+                <component :is="statusConfig[activity.status].icon" class="w-3 h-3" />
+                {{ statusConfig[activity.status].text }}
               </span>
             </div>
             <span 
@@ -104,7 +109,7 @@
               class="w-full mt-4 py-2.5 rounded-lg transition-colors text-white font-semibold"
               :style="{ backgroundColor: activity.color }"
             >
-              {{ completedActivities.has(activity.id) ? 'Revisar actividad' : 'Iniciar actividad' }} →
+              {{ statusConfig[activity.status] ? statusConfig[activity.status].buttonText : 'Iniciar' }} →
             </button>
           </div>
         </div>
@@ -135,9 +140,8 @@
 
 <script setup>
 import { ref, computed, shallowRef } from 'vue';
-import { Shield, Lock, Users, Award, Trophy } from 'lucide-vue-next';
+import { Shield, Lock, Users, Award, Trophy, Circle, CircleDashed, CheckCircle2 } from 'lucide-vue-next';
 
-// Importar componentes de actividad de forma asíncrona para mejorar el rendimiento
 const PhishingDetector = shallowRef(null);
 const PasswordGenerator = shallowRef(null);
 const CyberbullyingCase = shallowRef(null);
@@ -154,7 +158,8 @@ const activities = ref([
     description: 'Analiza correos electrónicos y aprende a identificar intentos de phishing',
     color: '#0077B6',
     icon: Shield,
-    component: PhishingDetector
+    component: PhishingDetector,
+    status: 'not-started' 
   },
   {
     id: 2,
@@ -163,7 +168,8 @@ const activities = ref([
     description: 'Crea y evalúa contraseñas en tiempo real con análisis de seguridad',
     color: '#00B4D8',
     icon: Lock,
-    component: PasswordGenerator
+    component: PasswordGenerator,
+    status: 'not-started'
   },
   {
     id: 3,
@@ -172,9 +178,16 @@ const activities = ref([
     description: 'Toma decisiones en un caso de ciberacoso y aprende sobre ciudadanía digital',
     color: '#48BFE3',
     icon: Users,
-    component: CyberbullyingCase
+    component: CyberbullyingCase,
+    status: 'not-started'
   }
 ]);
+
+const statusConfig = {
+  'completed': { icon: CheckCircle2, text: 'Completada', badgeClass: 'bg-green-100 text-green-700', buttonText: 'Revisar actividad' },
+  'in-progress': { icon: CircleDashed, text: 'En progreso', badgeClass: 'bg-blue-100 text-blue-700', buttonText: 'Continuar actividad' },
+  'not-started': { icon: Circle, text: 'No iniciada', badgeClass: 'bg-gray-100 text-gray-700', buttonText: 'Iniciar actividad' }
+};
 
 const instructions = [
   "Lee las instrucciones cuidadosamente antes de comenzar",
@@ -183,19 +196,28 @@ const instructions = [
   "Puedes repetir las actividades cuantas veces quieras"
 ];
 
-const completedActivities = ref(new Set());
 const selectedActivity = ref(null);
 
-const handleActivityComplete = (activityId) => {
-  completedActivities.value.add(activityId);
-  // Opcional: podrías volver a la lista automáticamente tras completar
-  // setTimeout(() => {
-  //   selectedActivity.value = null;
-  // }, 2000);
+const selectAndStartActivity = (activity) => {
+  if (activity.status === 'not-started') {
+    activity.status = 'in-progress';
+  }
+  selectedActivity.value = activity;
 };
+
+const handleActivityComplete = (activityId) => {
+  const activity = activities.value.find(a => a.id === activityId);
+  if (activity) {
+    activity.status = 'completed';
+  }
+};
+
+const completedActivitiesCount = computed(() => {
+  return activities.value.filter(a => a.status === 'completed').length;
+});
 
 const progressPercentage = computed(() => {
   if (activities.value.length === 0) return 0;
-  return (completedActivities.value.size / activities.value.length) * 100;
+  return (completedActivitiesCount.value / activities.value.length) * 100;
 });
 </script>

@@ -55,7 +55,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNuxtApp } from '#app';
 
 const { $auth } = useNuxtApp();
@@ -71,9 +71,17 @@ const handleRegister = async () => {
   }
 
   try {
+    // 1. Crear el usuario
     const userCredential = await createUserWithEmailAndPassword($auth, email.value, password.value);
     const user = userCredential.user;
     
+    // 2. Guardar el nombre en el perfil de Firebase (en el backend)
+    await updateProfile(user, { displayName: nombre.value });
+
+    // 3. Forzar la recarga del objeto de usuario en el cliente para obtener los datos actualizados
+    await user.reload();
+
+    // 4. Guardar datos adicionales en tu propia API (opcional)
     await fetch('http://localhost:3000/usuarios', { 
       method: 'POST',
       headers: {
@@ -82,13 +90,13 @@ const handleRegister = async () => {
       body: JSON.stringify({
         email: user.email,
         uid: user.uid, 
-        nombre: nombre.value,
+        nombre: nombre.value, // Ahora user.displayName también estaría disponible
         rol: 'estudiante'
       }),
     });
 
-    alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-    await navigateTo('/login');
+    // 5. Redirigir a la página de inicio. Ahora sí tendrá el nombre correcto.
+    await navigateTo('/');
 
   } catch (error) {
     if (error.code === 'auth/email-already-in-use') {

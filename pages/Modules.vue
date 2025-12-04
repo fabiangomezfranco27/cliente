@@ -96,9 +96,42 @@
                           <span 
                             class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 bg-gray-400"
                           />
-                          <span class="flex-1">{{ point }}</span>
+                            <span class="flex-1">{{ point }}</span>
                         </li>
                       </ul>
+                      <div v-if="subtopic.name === 'Prevención'" class="w-full flex justify-center py-4">
+                        <img src="/1.jpeg" alt="Educa a tu familia" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Cómo identificarlo'" class="w-full flex justify-center py-4">
+                        <img src="/2.jpeg" alt="No compartas información sensible" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Protección'" class="w-full flex justify-center py-4">
+                        <img src="/3.jpeg" alt="Bloquear anuncios maliciosos" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Prevención efectiva'" class="w-full flex justify-center py-4">
+                        <img src="/4.jpeg" alt="Cuidado con encuestas y formularios" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Gestión de contraseñas'" class="w-full flex justify-center py-4">
+                        <img src="/5.jpeg" alt="Habilitar notificaciones de inicio de sesión" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                       <div v-if="subtopic.name === 'Cuentas prioritarias para 2FA'" class="w-full flex justify-center py-4">
+                        <img src="/6.jpeg" alt="Activar 2FA en plataformas de trabajo" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Tus derechos digitales'" class="w-full flex justify-center py-4">
+                        <img src="/7.jpeg" alt="Derecho a no ser sujeto de decisiones automatizadas" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                       <div v-if="subtopic.name === 'Equilibrio digital'" class="w-full flex justify-center py-4">
+                        <img src="/8.jpeg" alt="Usa tecnología con propósito, no por hábito" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Si eres testigo'" class="w-full flex justify-center py-4">
+                        <img src="/9.jpeg" alt="Sé un upstander, no un bystander" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Compartir responsablemente'" class="w-full flex justify-center py-4">
+                        <img src="/10.jpeg" alt="Asume responsabilidad por lo que publicas" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
+                      <div v-if="subtopic.name === 'Comunidades positivas'" class="w-full flex justify-center py-4">
+                        <img src="/11.jpeg" alt="Modela el comportamiento que quieres ver en otros" class="w-3/6 mx-auto rounded-lg shadow-md">
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -128,7 +161,7 @@
 import { ref } from 'vue';
 import { 
   Lock, Shield, Users, AlertTriangle, Bug, UserX, Key, Smartphone, 
-  Database, Heart, Flag, FileWarning, ChevronDown 
+  Database, Heart, FileText, ChevronDown, Fish, ShieldAlert
 } from 'lucide-vue-next';
 
 const openTopics = ref({});
@@ -187,7 +220,7 @@ const competencies = ref([
       },
       {
         title: 'Phishing',
-        icon: Flag,
+        icon: Fish,
         content: `El phishing es una técnica de engaño donde atacantes se hacen pasar por entidades legítimas para robar información confidencial.`,
         subtopics: [
           {
@@ -518,7 +551,7 @@ const competencies = ref([
       },
       {
         title: 'Ciberacoso',
-        icon: AlertTriangle,
+        icon: ShieldAlert,
         content: `El ciberacoso es el uso de tecnología para acosar, amenazar, avergonzar o intimidar a otra persona de forma repetida.`,
         subtopics: [
           {
@@ -570,7 +603,7 @@ const competencies = ref([
       },
       {
         title: 'Uso ético de la información',
-        icon: FileWarning,
+        icon: FileText,
         content: `Usar información de manera ética significa respetar la propiedad intelectual, verificar fuentes y compartir responsablemente.`,
         subtopics: [
           {

@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-64 flex flex-col text-white bg-gradient-to-r from-[#1E88E5] to-[#43A047]">
+  <aside class="w-64 flex flex-col text-white bg-gradient-to-r from-[#43A047] to-[#1E88E5]">
     <div 
       class="h-20 flex items-center justify-center border-b border-white/20 px-6 cursor-pointer hover:bg-white/10 transition-colors"
       @click="onSectionChange('dashboard')"
